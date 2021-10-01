@@ -1,6 +1,6 @@
 <?php
 
-use Illuminate\Http\Request;
+use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -18,3 +18,13 @@ use Illuminate\Support\Facades\Route;
     return $request->user();
 });
  */
+
+// Authentication
+Route::post('/register', [AuthController::class, 'register']);
+Route::post('/login', [AuthController::class, 'login']);
+
+// Authentication Protected
+Route::group(['middleware' => ['auth:sanctum']], function ()
+{
+    Route::post('/logout', [AuthController::class, 'logout']);
+});
