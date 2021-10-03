@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\TwitterController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,4 +16,4 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return 'Nothing to see here, Bye!';
-});
+})->name('home');
