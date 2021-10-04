@@ -55,17 +55,12 @@ class TwitterController extends Controller
      */
     public function saveCredentials(Request $request): bool
     {
-        try
-        {
-            $user = auth()->user();
+        $user = auth()->user();
 
-            $token = $request->get('oauth_token');
-            $verifier = $request->get('oauth_verifier');
-            $twitterCredential = new TwitterCredential(['oauth_token' => $token, 'oauth_verifier' => $verifier]);
+        $token = $request->get('oauth_token');
+        $verifier = $request->get('oauth_verifier');
+        $twitterCredential = new TwitterCredential(['oauth_token' => $token, 'oauth_verifier' => $verifier]);
 
-            $user->twitterCredentials()->save($twitterCredential);
-        } catch(Throwable) { return false; }
-
-        return true;
+        $user->twitterCredentials()->save($twitterCredential);
     }
 }
