@@ -42,4 +42,12 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    /**
+     * Get the twitter credentials for the user.
+     */
+    public function twitterCredentials()
+    {
+        return $this->hasMany(TwitterCredential::class);
+    }
 }
