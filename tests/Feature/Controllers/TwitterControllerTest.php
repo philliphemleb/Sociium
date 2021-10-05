@@ -5,6 +5,7 @@ namespace Tests\Feature\Controllers;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
+use Throwable;
 
 class TwitterControllerTest extends TestCase
 {
@@ -27,7 +28,7 @@ class TwitterControllerTest extends TestCase
      *
      * @return void
      */
-    public function testUserWillBeRedirectedToTwitterForAuthentication()
+    public function testAuthenticationUserWillBeRedirectedToTwitterForAuthentication()
     {
         $user = User::factory()->create();
 
@@ -40,18 +41,30 @@ class TwitterControllerTest extends TestCase
      * This test checks if the saveCredentials method in TwitterController is saving the twitter credentials as expected.
      *
      * @return void
+     * @throws Throwable
      */
-    public function testCredentialsShouldBeSavedInRelationWithTheExpectedUser()
+    public function testTwitterCredentialsUserCanSaveTwitterCredentials()
     {
         $user = User::factory()->create();
 
         $url = '/api/twitter/saveCredentials?oauth_token='. $this->data['oauth_token'] .'&oauth_verifier='. $this->data['oauth_verifier'];
         $response = $this->actingAs($user)->get($url, ['Accept' => 'application/json']);
 
+        $response->assertStatus(201)->assertExactJson([true]);
         $this->assertDatabaseHas('twitter_credentials', [
             'user_id' => $user->id,
             'oauth_token' => $this->data['oauth_token'],
             'oauth_verifier' => $this->data['oauth_verifier']
         ]);
+    }
+
+    public function testTwitterCredentialsUserGetsStatusCode500InFailure()
+    {
+        $user = User::factory()->create();
+
+        $url = '/api/twitter/saveCredentials?oauth_token='. $this->data['oauth_token'];
+        $response = $this->actingAs($user)->get($url, ['Accept' => 'application/json']);
+
+        $response->assertStatus(500)->assertExactJson([false]);
     }
 }

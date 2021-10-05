@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Abraham\TwitterOAuth\TwitterOAuth;
 use Abraham\TwitterOAuth\TwitterOAuthException;
 use App\Models\TwitterCredential;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Env;
 use Throwable;
@@ -16,7 +18,6 @@ class TwitterController extends Controller
     private string $TWITTER_CONSUMER_SECRET;
 
     private TwitterOAuth $connection;
-    private string $oauthToken;
 
     /**
      * @throws TwitterOAuthException
@@ -35,15 +36,15 @@ class TwitterController extends Controller
      * The authenticate method should return a redirect to the twitter authentication page.
      *
      * @param Request $request
-     * @return \Illuminate\Http\RedirectResponse
+     * @return RedirectResponse
      * @throws TwitterOAuthException
      */
-    public function authenticate(Request $request)
+    public function authenticate(Request $request): RedirectResponse
     {
         $requestToken = $this->connection->oauth('oauth/request_token');
-        $this->oauthToken = $requestToken['oauth_token'];
+        $oauthToken = $requestToken['oauth_token'];
 
-        $url = $this->connection->url('oauth/authorize', ['oauth_token' => $this->oauthToken]);
+        $url = $this->connection->url('oauth/authorize', ['oauth_token' => $oauthToken]);
         return Redirect()->away($url);
     }
 
@@ -51,16 +52,23 @@ class TwitterController extends Controller
      * The saveCredentials method should save the given token and verifier in the database, related to the user.
      *
      * @param Request $request
-     * @return bool
+     * @return JsonResponse
      */
-    public function saveCredentials(Request $request): bool
+    public function saveCredentials(Request $request): JsonResponse
     {
-        $user = auth()->user();
+        try
+        {
+            $user = auth()->user();
 
-        $token = $request->get('oauth_token');
-        $verifier = $request->get('oauth_verifier');
-        $twitterCredential = new TwitterCredential(['oauth_token' => $token, 'oauth_verifier' => $verifier]);
+            $token = $request->get('oauth_token');
+            $verifier = $request->get('oauth_verifier');
+            $twitterCredential = new TwitterCredential(['oauth_token' => $token, 'oauth_verifier' => $verifier]);
 
-        $user->twitterCredentials()->save($twitterCredential);
+            $saved = $user->twitterCredentials()->save($twitterCredential);
+        } catch (Throwable) {
+            return Response()->json([false], 500);
+        }
+
+        return Response()->json([true], 201);
     }
 }
