@@ -58,6 +58,12 @@ class TwitterControllerTest extends TestCase
         ]);
     }
 
+    /**
+     * This test checks if the saveCredentials method in TwitterController is returns false on failure.
+     *
+     * @return void
+     * @throws Throwable
+     */
     public function testTwitterCredentialsUserGetsStatusCode500InFailure()
     {
         $user = User::factory()->create();
