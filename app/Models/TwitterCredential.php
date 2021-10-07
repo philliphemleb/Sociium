@@ -17,7 +17,7 @@ class TwitterCredential extends Model
     protected $fillable = [
         'user_id',
         'oauth_token',
-        'oauth_verifier',
+        'oauth_token_secret',
     ];
 
     /**
