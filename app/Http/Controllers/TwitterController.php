@@ -12,7 +12,9 @@ use Throwable;
 class TwitterController extends Controller
 {
     public function __construct(private TwitterService $twitterService)
-    {}
+    {
+        
+    }
 
     /**
      * The authenticate method should return a redirect to the twitter authentication page.
