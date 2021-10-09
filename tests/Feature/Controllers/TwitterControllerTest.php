@@ -90,4 +90,14 @@ class TwitterControllerTest extends TestCase
 
         $response->assertStatus(500)->assertJsonStructure(['status', 'message']);
     }
+
+    public function testUserWillBeRedirectedToAuthenticationPageIfTheSecretIsNotGiven()
+    {
+        $user = User::factory()->create();
+        $url = '/api/twitter/saveCredentials?oauth_token=' . $this->data['oauth_token'] . '&oauth_verifier=' . $this->data['oauth_verifier'];
+
+        $response = $this->actingAs($user)->get($url, ['Accept' => 'application/json']);
+
+        $response->assertRedirectToSignedRoute('twitter_authenticate');
+    }
 }

@@ -32,6 +32,6 @@ Route::group(['middleware' => ['auth:sanctum']], function ()
 
 Route::prefix('/twitter')->group(function ()
 {
-    Route::get('/authenticate', [TwitterController::class, 'authenticate']);
-    Route::get('/saveCredentials', [TwitterController::class, 'saveCredentials']);
+    Route::get('/authenticate', [TwitterController::class, 'authenticate'])->name('twitter_authenticate');
+    Route::get('/saveCredentials', [TwitterController::class, 'saveCredentials'])->name('twitter_saveCredentials');
 });

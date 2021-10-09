@@ -39,7 +39,7 @@ class TwitterController extends Controller
         $twitterCredentials = $user->twitterCredentials;
 
         if (isset($twitterCredentials[0])) return Response()->json(['status' => false, 'message' => 'already exists.'], 500);
-        if (!session()->has('oauth_token_secret')) return Redirect()->to('authenticate');
+        if (!session()->has('oauth_token_secret')) return Redirect()->signedRoute('twitter_authenticate');
 
         $accessToken = $this->twitterService->getUserAccessToken($request->get('oauth_token'), $request->get('oauth_verifier'), session()->get('oauth_token_secret'));
         $twitterCredential = new TwitterCredential(['oauth_token' => $accessToken['oauth_token'], 'oauth_token_secret' => $accessToken['oauth_token_secret']]);
