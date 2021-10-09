@@ -83,10 +83,11 @@ class TwitterControllerTest extends TestCase
     public function testUserGetsStatusCode500AtFailureOnSaveCredentials()
     {
         $user = User::factory()->create();
-
         $url = '/api/twitter/saveCredentials?oauth_token=' . $this->data['oauth_token'];
+        $this->session(['oauth_token_secret' => $this->data['oauth_token_secret']]);
+
         $response = $this->actingAs($user)->get($url, ['Accept' => 'application/json']);
 
-        $response->assertStatus(500)->assertExactJson(['status' => false]);
+        $response->assertStatus(500)->assertJsonStructure(['status', 'message']);
     }
 }

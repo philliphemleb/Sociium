@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Http\Services\TwitterService;
 use App\Models\TwitterCredential;
-use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -34,6 +33,8 @@ class TwitterController extends Controller
      */
     public function saveCredentials(Request $request): JsonResponse|RedirectResponse
     {
+        if (!$request->has('oauth_token') || !$request->has('oauth_verifier')) return Response()->json(['status' => false, 'message' => 'token and verifier are required.'], 500);
+
         $user = auth()->user();
         $twitterCredentials = $user->twitterCredentials;
 
@@ -45,8 +46,5 @@ class TwitterController extends Controller
         $user->twitterCredentials()->save($twitterCredential);
 
         return Response()->json(['status' => true], 201);
-    }
-
-        return Response()->json([true], 201);
     }
 }
