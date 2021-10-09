@@ -9,7 +9,6 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Mockery;
 use Mockery\MockInterface;
 use Tests\TestCase;
-use Throwable;
 
 class TwitterControllerTest extends TestCase
 {
@@ -32,8 +31,6 @@ class TwitterControllerTest extends TestCase
 
     /**
      * This test checks if the authentication method in TwitterController is redirecting the user as expected.
-     *
-     * @return void
      */
     public function testUserWillBeRedirectedToTwitterForAuthentication()
     {
@@ -46,9 +43,6 @@ class TwitterControllerTest extends TestCase
 
     /**
      * This test checks if the saveCredentials method in TwitterController is saving the twitter credentials as expected.
-     *
-     * @return void
-     * @throws Throwable
      */
     public function testUserCanSaveTwitterCredentials()
     {
@@ -76,11 +70,8 @@ class TwitterControllerTest extends TestCase
 
     /**
      * This test checks if the saveCredentials method in TwitterController is returns false on failure.
-     *
-     * @return void
-     * @throws Throwable
      */
-    public function testUserGetsStatusCode500AtFailureOnSaveCredentials()
+    public function testUserGetsStatusCode500OnSaveCredentialsIfGetParameterIsMissing()
     {
         $user = User::factory()->create();
         $url = '/api/twitter/saveCredentials?oauth_token=' . $this->data['oauth_token'];
@@ -91,6 +82,9 @@ class TwitterControllerTest extends TestCase
         $response->assertStatus(500)->assertJsonStructure(['status', 'message']);
     }
 
+    /**
+     * This test checks if the saveCredentials method in TwitterController is redirecting the user if the secret is missing
+     */
     public function testUserWillBeRedirectedToAuthenticationPageIfTheSecretIsNotGiven()
     {
         $user = User::factory()->create();
