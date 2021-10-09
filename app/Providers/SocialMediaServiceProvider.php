@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Factories\TwitterOAuthFactory;
 use App\Http\Services\TwitterService;
 use Illuminate\Support\ServiceProvider;
 
@@ -14,7 +15,9 @@ class SocialMediaServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->singleton(TwitterService::class);
+        $this->app->singleton(TwitterService::class, function($app) {
+            return new TwitterService($app->get(TwitterOAuthFactory::class));
+        });
     }
 
     /**

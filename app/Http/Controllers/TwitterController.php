@@ -4,17 +4,15 @@ namespace App\Http\Controllers;
 
 use App\Http\Services\TwitterService;
 use App\Models\TwitterCredential;
+use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Throwable;
 
 class TwitterController extends Controller
 {
     public function __construct(private TwitterService $twitterService)
-    {
-        
-    }
+    {}
 
     /**
      * The authenticate method should return a redirect to the twitter authentication page.
@@ -32,22 +30,22 @@ class TwitterController extends Controller
      * The saveCredentials method should save the given token and verifier in the database, related to the user.
      *
      * @param Request $request
-     * @return JsonResponse
+     * @return JsonResponse|RedirectResponse
      */
-    public function saveCredentials(Request $request): JsonResponse
+    public function saveCredentials(Request $request): JsonResponse|RedirectResponse
     {
-        try
-        {
-            $user = auth()->user();
+        $user = auth()->user();
+        $twitterCredentials = $user->twitterCredentials;
 
-            $token = $request->get('oauth_token');
-            $verifier = $request->get('oauth_verifier');
-            $twitterCredential = new TwitterCredential(['oauth_token' => $token, 'oauth_verifier' => $verifier]);
+        if (isset($twitterCredentials[0])) return Response()->json(['status' => false, 'message' => 'already exists.'], 500);
+        if (!session()->has('oauth_token_secret')) return Redirect()->to('authenticate');
 
-            $user->twitterCredentials()->save($twitterCredential);
-        } catch (Throwable) {
-            return Response()->json([false], 500);
-        }
+        $accessToken = $this->twitterService->getUserAccessToken($request->get('oauth_token'), $request->get('oauth_verifier'), session()->get('oauth_token_secret'));
+        $twitterCredential = new TwitterCredential(['oauth_token' => $accessToken['oauth_token'], 'oauth_token_secret' => $accessToken['oauth_token_secret']]);
+        $user->twitterCredentials()->save($twitterCredential);
+
+        return Response()->json(['status' => true], 201);
+    }
 
         return Response()->json([true], 201);
     }

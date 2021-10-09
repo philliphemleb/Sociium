@@ -3,33 +3,30 @@ declare(strict_types=1);
 
 namespace App\Http\Services;
 
-use Abraham\TwitterOAuth\TwitterOAuth;
-use Illuminate\Support\Env;
+use App\Factories\TwitterOAuthFactory;
 
 class TwitterService
 {
-    private string $TWITTER_API_VERSION;
-    private string $TWITTER_CONSUMER_KEY;
-    private string $TWITTER_CONSUMER_SECRET;
-
-    private TwitterOAuth $connection;
-
-    public function __construct()
+    public function __construct(private TwitterOAuthFactory $authFactory)
     {
-        $this->TWITTER_API_VERSION = Env::get('TWITTER_API_VERSION');
-        $this->TWITTER_CONSUMER_KEY = Env::get('TWITTER_CONSUMER_KEY');
-        $this->TWITTER_CONSUMER_SECRET = Env::get('TWITTER_CONSUMER_SECRET');
-
-        $this->connection = new TwitterOAuth($this->TWITTER_CONSUMER_KEY, $this->TWITTER_CONSUMER_SECRET);
-        $this->connection->setApiVersion($this->TWITTER_API_VERSION);
     }
 
     public function getAuthenticationUrl(): string
     {
-        $requestToken = $this->connection->oauth('oauth/request_token');
-        $oauthToken = $requestToken['oauth_token'];
+        $connection = $this->authFactory->createAppAuth();
 
-        $url = $this->connection->url('oauth/authorize', ['oauth_token' => $oauthToken]);
+        $requestToken = $connection->oauth('oauth/request_token');
+        session(['oauth_token_secret' => $requestToken['oauth_token']]);
+
+        $url = $connection->url('oauth/authorize', ['oauth_token' => $requestToken['oauth_token']]);
         return $url;
+    }
+
+    public function getUserAccessToken(string $token, string $verifier, string $secret): array
+    {
+        $connection = $this->authFactory->createClientAuth($token, $secret);
+        session()->forget('oauth_token_secret');
+
+        return $connection->oauth('oauth/access_token', ['oauth_verifier' => $verifier]);
     }
 }
