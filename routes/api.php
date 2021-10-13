@@ -1,9 +1,5 @@
 <?php
 
-use App\Http\Controllers\AuthController;
-use App\Http\Controllers\TwitterController;
-use Illuminate\Support\Facades\Route;
-
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -20,18 +16,4 @@ use Illuminate\Support\Facades\Route;
 });
  */
 
-// Authentication
-Route::post('/register', [AuthController::class, 'register']);
-Route::post('/login', [AuthController::class, 'login']);
 
-// Authentication Protected
-Route::group(['middleware' => ['auth:sanctum']], function ()
-{
-    Route::post('/logout', [AuthController::class, 'logout']);
-});
-
-Route::prefix('/twitter')->group(function ()
-{
-    Route::get('/authenticate', [TwitterController::class, 'authenticate'])->name('twitter_authenticate');
-    Route::get('/saveCredentials', [TwitterController::class, 'saveCredentials'])->name('twitter_saveCredentials');
-});
