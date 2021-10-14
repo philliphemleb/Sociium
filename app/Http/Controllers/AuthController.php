@@ -64,7 +64,7 @@ class AuthController extends Controller
         {
             $request->session()->regenerate();
 
-            return redirect()->intended('home');
+            return redirect()->intended();
         }
         return back()->withErrors([
            'email' => __('auth.failed'),
@@ -85,6 +85,6 @@ class AuthController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return redirect('/');
+        return redirect()->route('login');
     }
 }
