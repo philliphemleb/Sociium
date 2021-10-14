@@ -30,6 +30,6 @@ Route::middleware(['auth'])->group(function () {
 
     Route::prefix('/twitter')->group(function () {
         Route::get('/authenticate', [TwitterController::class, 'authenticate'])->name('twitter_authenticate');
-        Route::post('/saveCredentials', [TwitterController::class, 'saveCredentials'])->name('twitter_saveCredentials');
+        Route::get('/saveCredentials', [TwitterController::class, 'saveCredentials'])->name('twitter_saveCredentials');
     });
 });

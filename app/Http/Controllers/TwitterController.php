@@ -22,7 +22,7 @@ class TwitterController extends Controller
     public function authenticate(Request $request): RedirectResponse
     {
         $url = $this->twitterService->getAuthenticationUrl();
-        return Redirect()->away($url);
+        return Redirect($url);
     }
 
     /**
@@ -34,17 +34,14 @@ class TwitterController extends Controller
     public function saveCredentials(Request $request): JsonResponse|RedirectResponse
     {
         if (!$request->has('oauth_token') || !$request->has('oauth_verifier')) return Response()->json(['status' => false, 'message' => 'token and verifier are required.'], 500);
+        if (!session()->has('oauth_token_secret')) return Redirect()->signedRoute('twitter_authenticate');
 
         $user = auth()->user();
-        $twitterCredentials = $user->twitterCredentials;
-
-        if (isset($twitterCredentials[0])) return Response()->json(['status' => false, 'message' => 'already exists.'], 500);
-        if (!session()->has('oauth_token_secret')) return Redirect()->signedRoute('twitter_authenticate');
 
         $accessToken = $this->twitterService->getUserAccessToken($request->get('oauth_token'), $request->get('oauth_verifier'), session()->get('oauth_token_secret'));
         $twitterCredential = new TwitterCredential(['oauth_token' => $accessToken['oauth_token'], 'oauth_token_secret' => $accessToken['oauth_token_secret']]);
         $user->twitterCredentials()->save($twitterCredential);
 
-        return Response()->json(['status' => true], 201);
+        return Redirect()->route('home');
     }
 }

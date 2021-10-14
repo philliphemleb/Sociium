@@ -16,7 +16,7 @@ class TwitterService
         $connection = $this->authFactory->createAppAuth();
 
         $requestToken = $connection->oauth('oauth/request_token');
-        session(['oauth_token_secret' => $requestToken['oauth_token']]);
+        session(['oauth_token_secret' => $requestToken['oauth_token_secret']]);
 
         $url = $connection->url('oauth/authorize', ['oauth_token' => $requestToken['oauth_token']]);
         return $url;
