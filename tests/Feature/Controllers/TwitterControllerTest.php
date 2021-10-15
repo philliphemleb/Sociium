@@ -29,28 +29,21 @@ class TwitterControllerTest extends TestCase
         ];
     }
 
-    /**
-     * This test checks if the authentication method in TwitterController is redirecting the user as expected.
-     */
     public function testUserWillBeRedirectedToTwitterForAuthentication()
     {
         $user = User::factory()->create();
 
-        $response = $this->actingAs($user)->get('/api/twitter/authenticate', ['Accept' => 'application/json']);
+        $request = $this->actingAs($user)->get('/twitter/authenticate');
 
-        $response->assertRedirect();
+        $request->assertRedirect();
     }
 
-    /**
-     * This test checks if the saveCredentials method in TwitterController is saving the twitter credentials as expected.
-     */
     public function testUserCanSaveTwitterCredentials()
     {
         $user = User::factory()->create();
-        $url = '/api/twitter/saveCredentials?oauth_token=' . $this->data['oauth_token'] . '&oauth_verifier=' . $this->data['oauth_verifier'];
         $this->session(['oauth_token_secret' => $this->data['oauth_token_secret']]);
 
-        $mock = $this->mock(TwitterOAuthFactory::class, function (MockInterface $mock) {
+        $this->mock(TwitterOAuthFactory::class, function (MockInterface $mock) {
             $twitterOAuthMock = Mockery::mock(TwitterOAuth::class, function (MockInterface $mock) {
                 $mock->shouldReceive('oauth')->andReturn(['oauth_token' => $this->data['user_token'], 'oauth_token_secret' => $this->data['user_secret']]);
             });
@@ -58,9 +51,9 @@ class TwitterControllerTest extends TestCase
             $mock->shouldReceive('createClientAuth')->once()->with($this->data['oauth_token'], $this->data['oauth_token_secret'])->andReturn($twitterOAuthMock);
         });
 
-        $response = $this->actingAs($user)->get($url, ['Accept' => 'application/json']);
+        $url = '/twitter/saveCredentials?oauth_token=' . $this->data['oauth_token'] . '&oauth_verifier=' . $this->data['oauth_verifier'];
+        $this->actingAs($user)->get($url);
 
-        $response->assertStatus(201)->assertExactJson(['status' => true]);
         $this->assertDatabaseHas('twitter_credentials', [
             'user_id' => $user->id,
             'oauth_token' => $this->data['user_token'],
@@ -68,30 +61,20 @@ class TwitterControllerTest extends TestCase
         ]);
     }
 
-    /**
-     * This test checks if the saveCredentials method in TwitterController is returns false on failure.
-     */
-    public function testUserGetsStatusCode500OnSaveCredentialsIfGetParameterIsMissing()
+    public function testUserGetsErrorOnSaveCredentialsIfDataIsInvalid()
     {
-        $user = User::factory()->create();
-        $url = '/api/twitter/saveCredentials?oauth_token=' . $this->data['oauth_token'];
-        $this->session(['oauth_token_secret' => $this->data['oauth_token_secret']]);
+        // TODO (Ticket: PA-13)
 
-        $response = $this->actingAs($user)->get($url, ['Accept' => 'application/json']);
-
-        $response->assertStatus(500)->assertJsonStructure(['status', 'message']);
+        $this->fail();
     }
 
-    /**
-     * This test checks if the saveCredentials method in TwitterController is redirecting the user if the secret is missing
-     */
     public function testUserWillBeRedirectedToAuthenticationPageIfTheSecretIsNotGiven()
     {
         $user = User::factory()->create();
-        $url = '/api/twitter/saveCredentials?oauth_token=' . $this->data['oauth_token'] . '&oauth_verifier=' . $this->data['oauth_verifier'];
 
-        $response = $this->actingAs($user)->get($url, ['Accept' => 'application/json']);
+        $url = '/twitter/saveCredentials?oauth_token=' . $this->data['oauth_token'] . '&oauth_verifier=' . $this->data['oauth_verifier'];
+        $response = $this->actingAs($user)->get($url);
 
-        $response->assertRedirectToSignedRoute('twitter_authenticate');
+        $response->assertRedirect('/twitter/authenticate');
     }
 }

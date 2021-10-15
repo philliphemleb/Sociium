@@ -74,9 +74,6 @@ class AuthController extends Controller
 
     /**
      * The logout method should delete every active token before returning a success message.
-     *
-     * @param Request $request
-     * @return Response
      */
     public function logout(Request $request): Response
     {
