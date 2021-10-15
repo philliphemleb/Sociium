@@ -17,7 +17,7 @@ class AuthController extends Controller
     /**
      * This method will prepare and show the register view.
      */
-    public function showRegisterView(Request $request): View
+    public function register(Request $request): View
     {
         return view('auth.register');
     }
@@ -25,7 +25,7 @@ class AuthController extends Controller
     /**
      * The register method should check the given data, create the user and his personal token and should then return the user and the token.
      */
-    public function register(RegisterRequest $request): View|RedirectResponse
+    public function create(RegisterRequest $request): View|RedirectResponse
     {
         $fields = $request->validated();
 
@@ -44,7 +44,7 @@ class AuthController extends Controller
     /**
      * This method will prepare and show the login view.
      */
-    public function showLoginView(Request $request): View
+    public function login(Request $request): View
     {
         return view('auth.login');
     }
@@ -52,7 +52,7 @@ class AuthController extends Controller
     /**
      * The login method should validate the given data and create the user.
      */
-    public function login(LoginRequest $request): View|RedirectResponse
+    public function authenticate(LoginRequest $request): View|RedirectResponse
     {
         $fields = $request->validated();
 
