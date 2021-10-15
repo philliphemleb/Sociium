@@ -12,8 +12,9 @@ const mix = require('laravel-mix');
  */
 
 mix.js('resources/js/app.js', 'public/js')
-    .vue()
-    .copyDirectory('node_modules/@fortawesome/fontawesome-free/webfonts', 'public/webfonts')
     .postCss("resources/css/app.css", "public/css", [
-       require("tailwindcss")
-    ]);
+        require("tailwindcss")
+    ])
+    .sass('resources/sass/app.scss', 'public/css')
+    .copyDirectory('node_modules/@fortawesome/fontawesome-free/webfonts', 'public/webfonts')
+    .vue();
