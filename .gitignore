@@ -4,6 +4,7 @@
 /public/css
 /public/js
 /public/webfonts
+/resources/ziggy.js
 /storage/*.key
 /vendor
 .env
