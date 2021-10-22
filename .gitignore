@@ -1,8 +1,6 @@
 /node_modules
 /public/hot
 /public/storage
-/public/css/*
-/public/js/*
 /public/webfonts
 /resources/ziggy.js
 /storage/*.key
@@ -17,3 +15,4 @@ npm-debug.log
 yarn-error.log
 /.idea
 /.vscode
+/public/
