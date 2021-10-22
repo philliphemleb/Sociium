@@ -10,7 +10,6 @@
     <title>{{ config('app.name', 'Laravel') }}</title>
 
     <!-- Scripts -->
-    @routes
     <script src="{{ asset('js/app.js') }}" defer></script>
 
     <!-- Fonts -->
@@ -22,18 +21,7 @@
 </head>
 <body>
     <div id="app">
-
-        <navigation-component></navigation-component>
-
-        @if($errors->any())
-            <notification-container-component>
-                <notification-component></notification-component>
-            </notification-container-component>
-        @endif
-
-        <main class="py-4">
-            @yield('content')
-        </main>
+        <app></app>
     </div>
 </body>
 </html>

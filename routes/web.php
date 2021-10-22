@@ -17,22 +17,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::fallback([HomeController::class, 'index'])->name('home');
-Route::get('/', [HomeController::class, 'index'])->name('home');
-
-Route::get('/register', [AuthController::class, 'register'])->name('register');
-Route::post('/register', [AuthController::class, 'create'])->name('register');
-
-Route::get('/login', [AuthController::class, 'login'])->name('login');
-Route::post('/login', [AuthController::class, 'authenticate'])->name('login');
-
-Route::middleware(['auth'])->group(function () {
-    Route::match(['GET', 'POST'], '/logout', [AuthController::class, 'logout'])->name('logout');
-
-    Route::prefix('/twitter')->group(function () {
-        Route::get('/', [TwitterController::class, 'index'])->name('twitter_index');
-
-        Route::get('/authenticate', [TwitterAuthController::class, 'authenticate'])->name('twitter_authenticate');
-        Route::get('/saveCredentials', [TwitterAuthController::class, 'saveCredentials'])->name('twitter_saveCredentials');
-    });
+Route::get('/{any?}', function () {
+   return view('app');
 });
