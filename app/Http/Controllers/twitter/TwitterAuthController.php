@@ -1,14 +1,15 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\twitter;
 
+use App\Http\Controllers\Controller;
 use App\Http\Requests\twitter\SaveCredentialsRequest;
 use App\Http\Services\TwitterService;
 use App\Models\TwitterCredential;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
-class TwitterController extends Controller
+class TwitterAuthController extends Controller
 {
     public function __construct(private TwitterService $twitterService)
     {}

@@ -10,6 +10,7 @@
     <title>{{ config('app.name', 'Laravel') }}</title>
 
     <!-- Scripts -->
+    @routes
     <script src="{{ asset('js/app.js') }}" defer></script>
 
     <!-- Fonts -->
@@ -21,34 +22,14 @@
 </head>
 <body>
     <div id="app">
-        <nav class="flex justify-between bg-gray-900 text-white w-screen">
-            <div class="px-5 xl:px-12 py-6 flex w-full items-center">
-                <a class="text-3xl font-bold font-heading" href="#">
-                    Logo Here.
-                </a>
-                <!-- Nav Links -->
-                <ul class="hidden md:flex px-4 mx-auto font-semibold font-heading space-x-12">
-                    <li><a class="hover:text-gray-200" href="#">Home</a></li>
-                    <li><a class="hover:text-gray-200" href="#">Dashboard</a></li>
-                    <li><a class="hover:text-gray-200" href="#">Contact Us</a></li>
-                </ul>
-                <!-- Header Icons -->
-                <div class="hidden xl:flex items-center space-x-5 items-center">
-                    <!-- Favourite Icon  -->
-                    <a class="hover:text-gray-200" href="#">
-                        <i class="far fa-heart fa-lg"></i>
-                    </a>
-                    <!-- Sign In / Register      -->
-                    <a class="hover:text-gray-200" href="#">
-                        <i class="far fa-user-circle fa-lg"></i>
-                    </a>
-                </div>
-            </div>
-            <!-- Responsive navbar -->
-            <a class="navbar-burger self-center mr-12 xl:hidden" href="#">
-                <i class="fas fa-bars fa-lg"></i>
-            </a>
-        </nav>
+
+        <navigation-component></navigation-component>
+
+        @if($errors->any())
+            <notification-container-component>
+                <notification-component></notification-component>
+            </notification-container-component>
+        @endif
 
         <main class="py-4">
             @yield('content')

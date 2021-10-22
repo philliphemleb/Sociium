@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
 use App\Models\User;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -23,7 +25,7 @@ class AuthController extends Controller
     }
 
     /**
-     * The register method should check the given data, create the user and his personal token and should then return the user and the token.
+     * this method should check the given data and then create the user.
      */
     public function create(RegisterRequest $request): View|RedirectResponse
     {
@@ -50,7 +52,7 @@ class AuthController extends Controller
     }
 
     /**
-     * The login method should validate the given data and create the user.
+     * The login method should validate the given data and log in the user.
      */
     public function authenticate(LoginRequest $request): View|RedirectResponse
     {
@@ -73,7 +75,7 @@ class AuthController extends Controller
     }
 
     /**
-     * The logout method should delete every active token before returning a success message.
+     * The logout method should invalidate the session and regenerate the CSRF Token before returning a success message.
      */
     public function logout(Request $request): Response
     {
