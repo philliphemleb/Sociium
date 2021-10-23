@@ -30,7 +30,7 @@
                 <li><a class="text-sm hover:text-yellow-400 font-bold text-decoration-none" href="#">About Us</a></li>
             </ul>
             <section class="text-2xl">
-                <button class="hover:text-yellow-400" @click=""> <i class="far fa-user-circle mx-1"></i> </button>
+                <button class="hover:text-yellow-400" @click="changeVisibility"> <i class="far fa-user-circle mx-1"></i> </button>
             </section>
         </nav>
 
@@ -40,7 +40,7 @@
                     leave-active-class="transition ease-in duration-75"
                     leave-class="transform opacity-100 scale-100"
                     leave-to-class="transform opacity-0 scale-95">
-            <div class="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5" v-show="">
+            <div class="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 border-l-2 border-yellow-400" v-show="visible">
                 <a href="#" class="block px-4 py-2 text-sm text-gray-900 hover:bg-yellow-200 hover:text-gray-900 text-decoration-none">Your Profile</a>
                 <a href="#" class="block px-4 py-2 text-sm text-gray-900 hover:bg-yellow-200 hover:text-gray-900 text-decoration-none">Settings</a>
                 <a href="#" class="block px-4 py-2 text-sm text-gray-900 hover:bg-yellow-200 hover:text-gray-900 text-decoration-none">Sign out</a>
@@ -54,12 +54,12 @@ export default {
     name: "NavigationComponent",
 
     data() {
-        return {visible: true}
+        return {visible: false}
     },
     methods: {
         changeVisibility: function ()
         {
-            this.visible = false;
+            this.visible = !this.visible;
         }
     }
 }
