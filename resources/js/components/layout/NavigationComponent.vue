@@ -19,7 +19,7 @@
                 </li>
                 <li class="text-decoration-none">
                     <router-link to="/twitter/dashboard">
-                        <button class="text-sm hover:text-yellow-400 font-bold text-decoration-none">Dashboard</button>
+                        <button class="text-sm hover:text-yellow-400 font-bold text-decoration-none">{{ $t("navigation.dashboard") }}</button>
                     </router-link>
                 </li>
                 <li>
