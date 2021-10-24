@@ -1,9 +1,5 @@
 <?php
 
-use App\Http\Controllers\AuthController;
-use App\Http\Controllers\HomeController;
-use App\Http\Controllers\twitter\TwitterAuthController;
-use App\Http\Controllers\twitter\TwitterController;
 use Illuminate\Support\Facades\Route;
 
 /*

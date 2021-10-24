@@ -5,8 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
 use App\Models\User;
-use Illuminate\Contracts\Foundation\Application;
-use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -17,17 +15,9 @@ use Symfony\Component\HttpFoundation\Response;
 class AuthController extends Controller
 {
     /**
-     * This method will prepare and show the register view.
-     */
-    public function register(Request $request): View
-    {
-        return view('auth.register');
-    }
-
-    /**
      * this method should check the given data and then create the user.
      */
-    public function create(RegisterRequest $request): View|RedirectResponse
+    public function register(RegisterRequest $request): Response
     {
         $fields = $request->validated();
 
@@ -35,12 +25,18 @@ class AuthController extends Controller
             [
                 'first_name' => $fields['first_name'],
                 'last_name' => $fields['last_name'],
-                'email' => $fields['email'],
+                'email' => $fields['email_address'],
                 'password' => Hash::make($fields['password'])
             ]
         );
 
-        return redirect()->route('login');
+        $token = $user->createToken('personal_access_token')->plainTextToken;
+        $response = [
+            'user' => $user,
+            'token' => $token
+        ];
+
+        return response($response, 201);
     }
 
     /**
