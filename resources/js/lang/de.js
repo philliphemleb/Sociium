@@ -1,6 +1,6 @@
 const messages = {
     navigation: {
-        dashboard: 'Das Dashboard'
+        dashboard: 'Twitter'
     },
     auth: {
         register: 'Registrieren',

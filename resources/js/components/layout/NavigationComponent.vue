@@ -3,7 +3,7 @@
         <nav class="relative px-4 py-4 flex justify-between items-center bg-gray-900 text-gray-100 border-b-2 border-yellow-400">
             <a class="text-3xl font-bold font-heading text-decoration-none hover:text-yellow-400" href="#">
                 <!-- <img class="h-9" src="logo.png" alt="logo"> -->
-                Logo Here.
+                {{ appName }}
             </a>
             <div class="lg:hidden">
                 <button class="navbar-burger flex items-center p-3">
@@ -54,7 +54,10 @@ export default {
     name: "NavigationComponent",
 
     data() {
-        return {visible: false}
+        return{
+            appName: process.env.MIX_APP_NAME,
+            visible: false
+        }
     },
     methods: {
         changeVisibility: function ()

@@ -20,7 +20,7 @@ class AuthControllerTest extends TestCase
         $this->userData = [
             'first_name' => 'first',
             'last_name' => 'last',
-            'email' => 'TestUser@examplemail.com',
+            'email_address' => 'TestUser@examplemail.com',
             'password' => '123456789',
             'password_confirmation' => '123456789'
         ];
@@ -28,52 +28,58 @@ class AuthControllerTest extends TestCase
 
     public function testUserRegistration()
     {
-        $this->post('register', $this->userData);
+        $response = $this->post('/api/register', $this->userData);
 
-        $user = User::where('email', $this->userData['email'])->first();
+        $user = User::where('email', $this->userData['email_address'])->first();
 
+        $response->assertJsonStructure(
+            [
+                'user' => [
+                    'first_name',
+                    'last_name',
+                    'email',
+                    'updated_at',
+                    'created_at',
+                    'id',
+                ],
+                'token'
+            ]
+        );
         $this->assertDatabaseHas('users', [
             'first_name' => $this->userData['first_name'],
             'last_name' => $this->userData['last_name'],
-            'email' => $this->userData['email'],
+            'email' => $this->userData['email_address'],
         ]);
         $this->assertTrue(Hash::check($this->userData['password'], $user['password']));
     }
 
-    public function testUserIsRedirectingToLoginPageOnSuccess()
-    {
-        $request = $this->post('register', $this->userData);
-
-        $request->assertRedirect('/login');
-    }
-
     public function testUserRegistrationShouldThrowErrorIfTheGivenDataIsInvalid()
     {
-        $this->userData['email'] = "NotAnValidEmail";
+        $this->userData['email_address'] = "NotAnValidEmail";
 
-        $request = $this->post('register', $this->userData);
+        $response = $this->post('/api/register', $this->userData);
 
-        $request->assertSessionHasErrors();
+        $response->assertSessionHasErrors();
     }
 
-    public function testUserLoginShouldRedirectOnSuccess()
+    public function testUserLogin()
     {
         $password = 'TestPassword';
         $user = User::factory()->state(['password' => Hash::make($password)])->create();
 
-        $request = $this->post('/login', ['email' => $user->email, 'password' => 'TestPassword']);
+        $response = $this->post('/api/login', ['email' => $user->email, 'password' => 'TestPassword']);
 
-        $request->assertRedirect('/');
+        $response->assertJsonStructure(['token']);
     }
 
     public function testUserLoginShouldThrowErrorIfTheGivenDataIsInvalid()
     {
-        $email = 'NotAValidEmail@email.com';
-        $password = 'NotAValidPassword';
+        $email = 'NotExistingEmail@email.com';
+        $password = 'NotExistingPassword';
 
-        $request = $this->post('/login', ['email' => $email, 'password' => $password]);
+        $response = $this->post('/api/login', ['email' => $email, 'password' => $password]);
 
-        $request->assertSessionHasErrors();
+        $response->assertSessionHasErrors();
     }
 
     public function testUserLogoutShouldLogoutTheUserAsExpected()
@@ -81,9 +87,9 @@ class AuthControllerTest extends TestCase
         $user = User::factory()->create();
         $this->be($user);
 
-        $request = $this->post('/logout');
+        $response = $this->post('/logout');
 
-        $request->assertRedirect('/login');
+        $response->assertExactJson([true]);
         $this->assertGuest();
     }
 }
