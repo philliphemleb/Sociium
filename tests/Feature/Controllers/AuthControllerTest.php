@@ -85,12 +85,12 @@ class AuthControllerTest extends TestCase
     public function testUserLogoutShouldLogoutTheUserAsExpected()
     {
         $user = User::factory()->create();
-        $user->createToken('access_token')->plainTextToken;
+        $accessToken = $user->createToken('access_token')->plainTextToken;
         $this->be($user);
 
         $response = $this->delete('/api/logout');
-
         $response->assertExactJson(['message' => 'auth.logged_out']);
-        $this->assertNull($user->tokens());
+
+        $this->assertEmpty($user->tokens()->get());
     }
 }
