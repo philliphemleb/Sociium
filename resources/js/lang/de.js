@@ -4,6 +4,7 @@ const messages = {
     },
     auth: {
         register: 'Registrieren',
+        login: 'Anmelden',
         email: 'Email Adresse',
         email_required: 'Email Adresse ist notwendig.',
         email_must_be_email: 'Bitte gebe eine gültige Email Adresse ein.',
