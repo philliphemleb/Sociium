@@ -68,8 +68,9 @@ export default {
     },
     methods: {
         submit() {
+            this.errors = [];
+
             if (this.email_address && this.first_name && this.last_name && this.password && this.password_confirmation) {
-                let self = this;
 
                 axios.post(route('api.register', {
                     token: this.token,
@@ -79,12 +80,11 @@ export default {
                     password: this.password,
                     password_confirmation: this.password_confirmation,
                 }))
-                .then(function (response) {
+                .then((response) => {
                     console.log("test");
-                    self.$router.push({name: 'Login'});
+                    this.$router.push({name: 'Login'});
                 })
                 .catch((error) => {
-                    this.errors = [];
                     const errorsFromResponse = error.response.data.errors;
 
                     for (const [key, value] of Object.entries(errorsFromResponse)) {

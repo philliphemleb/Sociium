@@ -53,7 +53,7 @@ export default {
                     email: this.email_address,
                     password: this.password,
                 }))
-                    .then(function (response) {
+                    .then((response) => {
                         console.log("test");
                         // TODO: After login?
                     })
