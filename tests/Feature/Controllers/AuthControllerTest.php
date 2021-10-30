@@ -20,7 +20,7 @@ class AuthControllerTest extends TestCase
         $this->userData = [
             'first_name' => 'first',
             'last_name' => 'last',
-            'email_address' => 'TestUser@examplemail.com',
+            'email' => 'TestUser@examplemail.com',
             'password' => '123456789',
             'password_confirmation' => '123456789'
         ];
@@ -30,7 +30,7 @@ class AuthControllerTest extends TestCase
     {
         $response = $this->post('/api/register', $this->userData);
 
-        $user = User::where('email', $this->userData['email_address'])->first();
+        $user = User::where('email', $this->userData['email'])->first();
 
         $response->assertJsonStructure(
             [
@@ -48,14 +48,14 @@ class AuthControllerTest extends TestCase
         $this->assertDatabaseHas('users', [
             'first_name' => $this->userData['first_name'],
             'last_name' => $this->userData['last_name'],
-            'email' => $this->userData['email_address'],
+            'email' => $this->userData['email'],
         ]);
         $this->assertTrue(Hash::check($this->userData['password'], $user['password']));
     }
 
     public function testUserRegistrationShouldThrowErrorIfTheGivenDataIsInvalid()
     {
-        $this->userData['email_address'] = "NotAnValidEmail";
+        $this->userData['email'] = "NotAnValidEmail";
 
         $response = $this->post('/api/register', $this->userData);
 
@@ -69,27 +69,28 @@ class AuthControllerTest extends TestCase
 
         $response = $this->post('/api/login', ['email' => $user->email, 'password' => 'TestPassword']);
 
-        $response->assertJsonStructure(['token']);
+        $response->assertJsonStructure(['user', 'token']);
     }
 
     public function testUserLoginShouldThrowErrorIfTheGivenDataIsInvalid()
     {
-        $email = 'NotExistingEmail@email.com';
+        $email = 'NotExisting@email.com';
         $password = 'NotExistingPassword';
 
         $response = $this->post('/api/login', ['email' => $email, 'password' => $password]);
 
-        $response->assertSessionHasErrors();
+        $response->assertExactJson(['message' => 'auth.failed']);
     }
 
     public function testUserLogoutShouldLogoutTheUserAsExpected()
     {
         $user = User::factory()->create();
+        $user->createToken('access_token')->plainTextToken;
         $this->be($user);
 
-        $response = $this->post('/logout');
+        $response = $this->delete('/api/logout');
 
-        $response->assertExactJson([true]);
-        $this->assertGuest();
+        $response->assertExactJson(['message' => 'auth.logged_out']);
+        $this->assertNull($user->tokens());
     }
 }

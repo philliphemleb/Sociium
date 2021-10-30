@@ -5,10 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
 use App\Models\User;
-use Illuminate\Contracts\View\View;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -25,7 +22,7 @@ class AuthController extends Controller
             [
                 'first_name' => $fields['first_name'],
                 'last_name' => $fields['last_name'],
-                'email' => $fields['email_address'],
+                'email' => $fields['email'],
                 'password' => Hash::make($fields['password'])
             ]
         );
@@ -40,34 +37,30 @@ class AuthController extends Controller
     }
 
     /**
-     * This method will prepare and show the login view.
+     * The authenticate method should validate the given data and log in the user.
      */
-    public function login(Request $request): View
-    {
-        return view('auth.login');
-    }
-
-    /**
-     * The login method should validate the given data and log in the user.
-     */
-    public function authenticate(LoginRequest $request): View|RedirectResponse
+    public function login(LoginRequest $request): Response
     {
         $fields = $request->validated();
 
         $email = $fields['email'];
         $password = $fields['password'];
-        $remember = $request->has('remember');
 
-        if (Auth::attempt(['email' => $email, 'password' => $password], $remember))
+        $user = User::where('email', $email)->first();
+
+        if (!$user || !Hash::check($password, $user->password))
         {
-            $request->session()->regenerate();
-
-            return redirect()->intended();
+            return response(['message' => __('auth.failed')], 401);
         }
-        return back()->withErrors([
-           'email' => __('auth.failed'),
-           'password' => __('auth.password')
-        ]);
+
+        $user->tokens()->delete();
+        $token = $user->createToken('access_token')->plainTextToken;
+
+        $response = [
+            'user' => $user,
+            'token' => $token
+        ];
+        return response($response, 201);
     }
 
     /**
@@ -75,11 +68,12 @@ class AuthController extends Controller
      */
     public function logout(Request $request): Response
     {
-        Auth::logout();
+        Auth()->user()->tokens()->delete();
 
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
+        $response = [
+            'message' => __('auth.logged_out'),
+        ];
 
-        return redirect()->route('login');
+        return response($response, 201);
     }
 }

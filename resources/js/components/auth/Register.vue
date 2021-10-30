@@ -71,7 +71,7 @@ export default {
             if (this.email_address && this.first_name && this.last_name && this.password && this.password_confirmation) {
                 axios.post(route('api.register', {
                     token: this.token,
-                    email_address: this.email_address,
+                    email: this.email_address,
                     first_name: this.first_name,
                     last_name: this.last_name,
                     password: this.password,
@@ -79,6 +79,7 @@ export default {
                 }))
                 .then(function (response) {
                     console.log(response);
+                    // TODO: After login?
                 })
                 .catch((error) => {
                     this.errors = [];

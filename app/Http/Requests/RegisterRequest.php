@@ -22,7 +22,7 @@ class RegisterRequest extends FormRequest
         return [
             'first_name' => 'required|alpha|max:30',
             'last_name' => 'required|alpha|max:30',
-            'email_address' => 'required|email|string|max:255|unique:users,email',
+            'email' => 'required|email|string|max:255|unique:users,email',
             'password' => 'required|string|confirmed'
         ];
     }
@@ -39,11 +39,11 @@ class RegisterRequest extends FormRequest
             'last_name.required' => __('auth.last_name_required'),
             'last_name.alpha' => __('auth.last_name_only_alpha'),
             'last_name.max' => __('auth.last_name_max_characters'),
-            'email_address.required' => __('auth.email_required'),
-            'email_address.email' => __('auth.email_must_be_email'),
-            'email_address.string' => __('auth.email_must_be_string'),
-            'email_address.max' => __('auth.email_max_characters'),
-            'email_address.unique' => __('auth.email_unique'),
+            'email.required' => __('auth.email_required'),
+            'email.email' => __('auth.email_must_be_email'),
+            'email.string' => __('auth.email_must_be_string'),
+            'email.max' => __('auth.email_max_characters'),
+            'email.unique' => __('auth.email_unique'),
             'password.required' => __('auth.password_required'),
             'password.string' => __('auth.password_must_be_string'),
             'password.confirmed' => __('auth.password_must_be_confirmed')
