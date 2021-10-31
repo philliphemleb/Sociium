@@ -1,6 +1,6 @@
 <template>
     <section class="mb-5">
-        <nav class="relative px-4 py-4 flex justify-between items-center bg-gray-900 text-gray-100 border-b-2 border-yellow-400">
+        <nav class="relative px-4 py-4 flex justify-between items-center bg-gray-900 text-gray-100 border-b-2 border-yellow-400 z-40">
             <a class="text-3xl font-bold font-heading text-decoration-none hover:text-yellow-400" href="#">
                 <!-- <img class="h-9" src="logo.png" alt="logo"> -->
                 {{ appName }}
@@ -18,7 +18,7 @@
                     </svg>
                 </li>
                 <li class="text-decoration-none">
-                    <router-link to="/twitter/dashboard">
+                    <router-link :to="{name: 'TwitterDashboard'}">
                         <button class="text-sm hover:text-yellow-400 font-bold text-decoration-none">{{ $t("navigation.dashboard") }}</button>
                     </router-link>
                 </li>

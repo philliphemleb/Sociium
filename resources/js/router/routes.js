@@ -4,17 +4,17 @@ export default {
     routes: [
         {
             path: '/',
-            component: () => import('../components/Home'),
+            component: () => import('../pages/Home'),
             name: 'Home',
         },
         {
             path: '/register',
-            component: () => import('../components/auth/Register'),
+            component: () => import('../pages/Auth/RegisterPage'),
             name: 'Register',
         },
         {
             path: '/login',
-            component: () => import('../components/auth/Login'),
+            component: () => import('../pages/Auth/LoginPage'),
             name: 'Login',
         },
     ]
