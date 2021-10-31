@@ -2,14 +2,6 @@ const state = () => ({
    notifications: []
 })
 
-const getters = {
-
-}
-
-const actions = {
-
-}
-
 const mutations = {
     addNotification (state, data) {
         for (let i = 0; i < state.notifications.length; i++)
@@ -37,7 +29,7 @@ const mutations = {
 export default {
  namespaced: true,
  state,
- getters,
- actions,
+ getters: {},
+ actions: {},
  mutations
 }

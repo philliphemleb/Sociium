@@ -56,6 +56,7 @@ export default {
                     password: this.password,
                 }))
                     .then((response) => {
+                        this.$store.commit('authentication/setToken', response.data.token.split('|')[1])
                         this.$store.commit('notification/addNotification', {type: 'success', message: this.$i18n.t("auth.login_successful")});
                     })
                     .catch((error) => {

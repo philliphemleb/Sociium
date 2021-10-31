@@ -17,5 +17,11 @@ export default {
             component: () => import('../pages/Auth/LoginPage'),
             name: 'Login',
         },
+        {
+            path: '/twitter',
+            component: () => import('../pages/Twitter/Dashboard'),
+            name: 'TwitterDashboard',
+            meta: {requiresAuth: true}
+        },
     ]
 }

@@ -10,6 +10,20 @@ import { ZiggyVue } from 'ziggy';
 import { Ziggy } from './ziggy';
 Vue.use(ZiggyVue, Ziggy);
 
+router.beforeEach((to, from, next) => {
+    if (to.meta.requiresAuth) {
+        console.log(store.state.authentication.access_token !== false);
+        if (store.state.authentication.access_token) {
+            next();
+        }
+        else {
+            next({name: 'Login'});
+        }
+    }
+
+    next();
+});
+
 const app = new Vue({
     el: '#app',
     router,

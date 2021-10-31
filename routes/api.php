@@ -14,7 +14,14 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+// Authentication
 Route::post('/register', [AuthController::class, 'register'])->name('api.register');
 Route::post('/login', [AuthController::class, 'login'])->name('api.login');
-Route::delete('/logout', [AuthController::class, 'logout'])->name('api.logout');
+
+Route::group(['middleware' => ['auth:sanctum']], function () {
+    // Authentication
+    Route::delete('/logout', [AuthController::class, 'logout'])->name('api.logout');
+
+    // Twitter Routes
+});
 
