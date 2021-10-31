@@ -81,7 +81,7 @@ export default {
                     password_confirmation: this.password_confirmation,
                 }))
                 .then((response) => {
-                    console.log("test");
+                    this.$store.commit('notification/addNotification', {type: 'success', message: this.$i18n.t("auth.register_successful")});
                     this.$router.push({name: 'Login'});
                 })
                 .catch((error) => {

@@ -2,9 +2,7 @@
     <div class="app">
         <NavigationComponent></NavigationComponent>
         <notification-container-component v-if=notifications.length>
-            <notification-component v-for="notification in notifications" :key="notification.message" :type="notification.type">
-                {{ notification.message }}
-            </notification-component>
+            <notification-component v-for="notification in notifications" :key="notification.message" :type="notification.type" :message="notification.message"></notification-component>
         </notification-container-component>
         <router-view></router-view>
     </div>

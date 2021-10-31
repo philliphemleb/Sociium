@@ -9,7 +9,7 @@
                     v-bind:class="{'text-red-400': type === 'error', 'text-yellow-400': type === 'warning', 'text-gray-900': type === 'info', 'text-green-400': type === 'success'}"
                 >{{ $t('notification.' + type) }}</h2>
                 <p class="text-gray-600">
-                    <slot></slot>
+                    {{ message }}
                 </p>
             </div>
         </div>
@@ -25,7 +25,8 @@
 export default {
     name: "NotificationComponent",
     props: {
-        type: String
+        type: String,
+        message: String
     },
 
     data() {
@@ -36,6 +37,7 @@ export default {
     methods: {
         changeVisibility: function ()
         {
+            this.$store.commit('notification/deleteNotification', this.message);
             this.visible = false;
         }
     }

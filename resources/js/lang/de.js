@@ -10,6 +10,7 @@ const messages = {
     },
     auth: {
         register: 'Registrieren',
+        register_successful: 'Registrierung erfolgreich',
         login: 'Anmelden',
         login_successful: 'Anmeldung erfolgreich',
         email: 'Email Adresse',
