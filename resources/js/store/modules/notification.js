@@ -1,7 +1,5 @@
 const state = () => ({
-   notifications: [
-
-   ]
+   notifications: []
 })
 
 const getters = {
