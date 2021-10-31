@@ -1,10 +1,10 @@
 <template>
-    <div class="app">
-        <NavigationComponent></NavigationComponent>
+    <div class="app h-screen grid grid-cols-12 grid-rows-12 bg-gray-100">
+        <NavigationComponent class="col-span-12 row-span-1"></NavigationComponent>
         <notification-container-component v-if=notifications.length>
             <notification-component v-for="notification in notifications" :key="notification.message" :type="notification.type" :message="notification.message"></notification-component>
         </notification-container-component>
-        <router-view></router-view>
+        <router-view class="col-span-9 row-span-11"></router-view>
     </div>
 </template>
 
@@ -17,7 +17,7 @@ export default {
     components: {
         NotificationContainerComponent,
         NotificationComponent,
-        NavigationComponent: () => import('./components/layout/NavigationComponent')
+        NavigationComponent: () => import('./components/layout/navigation/NavigationComponent')
     },
 
     data() {

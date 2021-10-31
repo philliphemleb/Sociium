@@ -6,7 +6,15 @@ module.exports = {
   ],
   darkMode: false, // or 'media' or 'class'
   theme: {
-    extend: {},
+    extend: {
+        gridTemplateRows: {
+            '12': 'repeat(12, minmax(0, 1fr))',
+        },
+        gridRow: {
+            'span-11': 'span 11 / span 11',
+            'span-12': 'span 12 / span 12',
+        }
+    },
   },
   variants: {
     extend: {

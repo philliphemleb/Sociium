@@ -4,8 +4,8 @@ export default {
     routes: [
         {
             path: '/',
-            component: () => import('../pages/Home'),
-            name: 'Home',
+            component: () => import('../pages/LandingPage'),
+            name: 'LandingPage',
         },
         {
             path: '/register',
@@ -16,12 +16,6 @@ export default {
             path: '/login',
             component: () => import('../pages/Auth/LoginPage'),
             name: 'Login',
-        },
-        {
-            path: '/twitter',
-            component: () => import('../pages/Twitter/Dashboard'),
-            name: 'TwitterDashboard',
-            meta: {requiresAuth: true}
         },
     ]
 }

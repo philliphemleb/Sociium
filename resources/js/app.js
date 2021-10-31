@@ -12,7 +12,6 @@ Vue.use(ZiggyVue, Ziggy);
 
 router.beforeEach((to, from, next) => {
     if (to.meta.requiresAuth) {
-        console.log(store.state.authentication.access_token !== false);
         if (store.state.authentication.access_token) {
             next();
         }
