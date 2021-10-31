@@ -47,6 +47,8 @@ export default {
     },
     methods: {
         submit() {
+            this.errors = [];
+
             if (this.email_address && this.password) {
                 axios.post(route('api.login', {
                     token: this.token,
@@ -54,11 +56,9 @@ export default {
                     password: this.password,
                 }))
                     .then((response) => {
-                        console.log("test");
-                        // TODO: After login?
+                        this.$store.commit('notification/addNotification', {type: 'success', message: this.$i18n.t("auth.login_successful")});
                     })
                     .catch((error) => {
-                        this.errors = [];
                         const errorsFromResponse = error.response.data.errors;
 
                         for (const [key, value] of Object.entries(errorsFromResponse)) {

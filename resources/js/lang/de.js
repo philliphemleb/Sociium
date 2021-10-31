@@ -2,9 +2,16 @@ const messages = {
     navigation: {
         dashboard: 'Twitter'
     },
+    notification: {
+        info: 'Information!',
+        warning: 'Warnung!',
+        error: 'Fehler!',
+        success: 'Erfolg!',
+    },
     auth: {
         register: 'Registrieren',
         login: 'Anmelden',
+        login_successful: 'Anmeldung erfolgreich',
         email: 'Email Adresse',
         email_required: 'Email Adresse ist notwendig.',
         email_must_be_email: 'Bitte gebe eine gültige Email Adresse ein.',
