@@ -6,6 +6,7 @@ export default {
             path: '/',
             component: () => import('../pages/LandingPage'),
             name: 'LandingPage',
+            meta: { hideNavigation: true }
         },
         {
             path: '/register',
