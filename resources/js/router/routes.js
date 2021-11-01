@@ -5,18 +5,28 @@ export default {
         {
             path: '/',
             component: () => import('../pages/LandingPage'),
-            name: 'LandingPage',
+            name: 'landingPage',
             meta: { hideNavigation: true }
         },
         {
             path: '/register',
             component: () => import('../pages/Auth/RegisterPage'),
-            name: 'Register',
+            name: 'register',
+            meta: { hideNavigation: true }
         },
         {
             path: '/login',
             component: () => import('../pages/Auth/LoginPage'),
-            name: 'Login',
+            name: 'login',
+            meta: { hideNavigation: true }
+        },
+        {
+            path: '/dashboard',
+            component: () => import('../pages/DashboardPage'),
+            name: 'dashboard',
+            meta: {
+                requiresAuth: true
+            }
         },
     ]
 }

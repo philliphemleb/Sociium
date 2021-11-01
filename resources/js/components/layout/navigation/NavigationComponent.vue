@@ -1,10 +1,9 @@
 <template>
     <section>
         <nav class="h-full px-4 py-4 flex justify-between items-center bg-gray-900 text-gray-100 border-b-2 border-yellow-400 z-40">
-            <a class="text-3xl font-bold font-heading text-decoration-none hover:text-yellow-400" href="#">
-                <!-- <img class="h-9" src="logo.png" alt="logo"> -->
-                {{ appName }}
-            </a>
+            <router-link :to="{name: 'dashboard'}">
+                <a class="text-3xl font-bold font-heading text-decoration-none hover:text-yellow-400" href="#">{{ appName }}</a>
+            </router-link>
             <section class="text-2xl">
                 <button class="hover:text-yellow-400" @click="changeVisibility"> <i class="far fa-user-circle mx-1"></i> </button>
             </section>

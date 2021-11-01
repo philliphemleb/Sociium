@@ -16,7 +16,7 @@ router.beforeEach((to, from, next) => {
             next();
         }
         else {
-            next({name: 'Login'});
+            next({name: 'landingPage'});
         }
     }
 
