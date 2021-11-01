@@ -1,11 +1,11 @@
 <template>
     <div class="app h-screen grid grid-cols-12 grid-rows-12 bg-gray-100">
-        <NavigationComponent v-if="!this.$route.meta.hideNavigation" class="col-span-12 row-span-1"></NavigationComponent>
+        <NavigationComponent class="col-span-12 row-span-1"></NavigationComponent>
         <side-bar-navigation-component v-if="!this.$route.meta.hideNavigation"  class="col-span-3 row-span-11"></side-bar-navigation-component>
-        <notification-container-component v-show="!this.$route.meta.hideNavigation" v-if=notifications.length>
+        <notification-container-component v-if=notifications.length>
             <notification-component v-for="notification in notifications" :key="notification.message" :type="notification.type" :message="notification.message"></notification-component>
         </notification-container-component>
-        <router-view class="col-span-9 row-span-11"></router-view>
+        <router-view class="col-span-9 row-span-12"></router-view>
     </div>
 </template>
 
