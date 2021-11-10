@@ -5,7 +5,7 @@
         <notification-container-component v-if=notifications.length>
             <notification-component v-for="notification in notifications" :key="notification.message" :type="notification.type" :message="notification.message"></notification-component>
         </notification-container-component>
-        <router-view class="col-span-9 row-span-12"></router-view>
+        <router-view class="col-span-9 row-span-12" :class="{'col-span-12': this.$route.meta.hideNavigation}" ></router-view>
     </div>
 </template>
 

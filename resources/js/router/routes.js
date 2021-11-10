@@ -24,9 +24,7 @@ export default {
             path: '/dashboard',
             component: () => import('../pages/DashboardPage'),
             name: 'dashboard',
-            meta: {
-                requiresAuth: true
-            }
+            meta: { requiresAuth: true }
         },
     ]
 }
