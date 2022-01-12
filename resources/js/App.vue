@@ -1,7 +1,7 @@
 <template>
     <div class="app h-screen grid grid-cols-12 grid-rows-12 bg-gray-100">
         <NavigationComponent class="col-span-12 row-span-1"></NavigationComponent>
-        <side-bar-navigation-component v-if="!this.$route.meta.hideNavigation"  class="col-span-3 row-span-11"></side-bar-navigation-component>
+        <side-bar-navigation-component class="col-span-3 row-span-11" v-if="!this.$route.meta.hideNavigation" ></side-bar-navigation-component>
         <notification-container-component v-if=notifications.length>
             <notification-component v-for="notification in notifications" :key="notification.message" :type="notification.type" :message="notification.message"></notification-component>
         </notification-container-component>
