@@ -14,5 +14,5 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/{any?}', function () {
-   return view('app');
+    abort(403, 'Unauthorized action.');
 })->where('any', '[\/\w\.-]*');
