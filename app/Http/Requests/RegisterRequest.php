@@ -20,8 +20,7 @@ class RegisterRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'first_name' => 'required|alpha|max:30',
-            'last_name' => 'required|alpha|max:30',
+            'username' => 'required|max:30',
             'email' => 'required|email|string|max:255|unique:users,email',
             'password' => 'required|string|confirmed'
         ];
@@ -33,12 +32,8 @@ class RegisterRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'first_name.required' => __('auth.first_name_required'),
-            'first_name.alpha' => __('auth.first_name_only_alpha'),
-            'first_name.max' => __('auth.first_name_max_characters'),
-            'last_name.required' => __('auth.last_name_required'),
-            'last_name.alpha' => __('auth.last_name_only_alpha'),
-            'last_name.max' => __('auth.last_name_max_characters'),
+            'username.required' => __('auth.last_name_required'),
+            'username.max' => __('auth.last_name_max_characters'),
             'email.required' => __('auth.email_required'),
             'email.email' => __('auth.email_must_be_email'),
             'email.string' => __('auth.email_must_be_string'),
