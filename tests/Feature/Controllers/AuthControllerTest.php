@@ -18,8 +18,7 @@ class AuthControllerTest extends TestCase
         parent::setUp();
 
         $this->userData = [
-            'first_name' => 'first',
-            'last_name' => 'last',
+            'username' => 'name',
             'email' => 'TestUser@examplemail.com',
             'password' => '123456789',
             'password_confirmation' => '123456789'
@@ -35,8 +34,7 @@ class AuthControllerTest extends TestCase
         $response->assertJsonStructure(
             [
                 'user' => [
-                    'first_name',
-                    'last_name',
+                    'username',
                     'email',
                     'updated_at',
                     'created_at',
@@ -46,8 +44,7 @@ class AuthControllerTest extends TestCase
             ]
         );
         $this->assertDatabaseHas('users', [
-            'first_name' => $this->userData['first_name'],
-            'last_name' => $this->userData['last_name'],
+            'username' => $this->userData['username'],
             'email' => $this->userData['email'],
         ]);
         $this->assertTrue(Hash::check($this->userData['password'], $user['password']));
